@@ -1,0 +1,33 @@
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) 
+    {
+        // two character frequency arrays
+        std::array<uint8_t, 26> freq1 {0}, freq2{0};
+
+        // count the frequency of characters in s1 (the smaller string)
+        for (auto c : s1) {
+            freq1[c-'a']++;
+        }
+
+        // loop through s2 and keep track of a window the size of s1
+        // count the frequency of the characters in the window of s2, and crosscheck it with the frequencies of characters in s1.
+        // if the frequency arrays are equal, then s1 is a permutation of s2
+        int start = 0;
+        for (auto i = 0; i < s2.length(); i++) {
+            // add the current char to the frequency array
+            freq2[s2[i] - 'a']++;
+            
+            // if the current length of the window is greater than s1, uncount the first char in the window and move the start pointer one place forward
+            if ((i-start+1) > s1.length()) {
+                freq2[s2[start++] - 'a']--;
+            }
+
+            // check if the frequency arrays are equal
+            if (std::equal(freq1.begin(), freq1.end(), freq2.begin())) {
+                return true;
+            }
+        }
+        return false;
+    }
+};

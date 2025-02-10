@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <style>
+        html, body {
+            overflow: hidden;
+            height: 100%;
+            margin: 0;
+            font-family: 'FreeMono', monospace;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #333;
+            color: #fff;
+            min-height: 150px;
+            padding: 10px;
+        }
+        .profile-pic {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+            border: 2px solid #fff;
+        }
+        .info {
+            display: flex;
+            flex-direction: column;
+        }
+        .info a {
+            margin-bottom: 5px;
+            text-decoration: none;
+            color: #1da1f2;
+        }
+        .info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="pfp.jpg" alt="Profile Picture" class="profile-pic">
+        <div class="info">
+            <h2>Graham Stelzer</h2>
+            <p>Contact: graham.stelzer.01@gmail.com</p>
+            <a href="https://www.linkedin.com/in/graham-stelzer" target="_blank">LinkedIn</a>
+            <a href="https://github.com/grahamstelzer" target="_blank">GitHub</a>
+        </div>
+    </div>
+</body>
+</html>

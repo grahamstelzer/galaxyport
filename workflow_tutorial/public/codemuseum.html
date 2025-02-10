@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Museum</title>
+    <style>
+        body {
+            font-family: 'FreeMono', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 2rem;
+        }
+        .code-snippet {
+            overflow: auto;
+            max-height: 400px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 1rem;
+            padding: 1rem;
+            width: calc(33.333% - 2rem);
+            box-sizing: border-box;
+        }
+        .code-snippet pre {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+        .code-snippet h2 {
+            margin-top: 0;
+        }
+        @media (max-width: 768px) {
+            .code-snippet {
+                width: calc(50% - 2rem);
+            }
+        }
+        @media (max-width: 480px) {
+            .code-snippet {
+                width: 100%;
+            }
+        }
+
+        #description {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 1rem auto;
+            padding: 1rem;
+            width: calc(100% - 4rem);
+            box-sizing: border-box;
+            max-width: 800px;
+        }
+        #description p {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Code Museum</h1>
+    </header>
+    <div id="description">
+        <p> Some of my favorite code snippets...</p>
+    </div>
+    <div class="container">
+        <div id="fizzbuzz" class="code-snippet">
+            <h2>High Throughput FizzBuzz</h2>
+            <h4>by David Frank ... 
+                <a href="https://codegolf.stackexchange.com/questions/215216/high-throughput-fizz-buzz/236630#236630" target="_blank">stack exchange</a>
+            </h4>
+
+            <script>
+                fetch('fb.txt')
+                    .then(response => response.text())
+                    .then(code => {
+                        document.querySelector('#fizzbuzz pre code').textContent = code;
+                    })
+                    .catch(error => console.error('Error fetching the file:', error));
+            </script>
+
+<pre><code>
+    <!-- code from script goes here -->
+</code></pre>
+
+        </div>
+        <div class="code-snippet">
+            <h2>Fast Inverse Square Root</h2>
+            <h4>from Quake III Arena ... 
+                <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root" target="_blank">wiki</a>
+
+            </h4>
+<pre><code>
+float Q_rsqrt( float number )
+{
+    long i;
+    float x2, y;
+    const float threehalfs = 1.5F;
+
+    x2 = number * 0.5F;
+    y  = number;
+    i  = * ( long * ) &y;						// evil floating point bit level hacking
+    i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
+    y  = * ( float * ) &i;
+    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+    return y;
+}
+</code></pre>
+        </div>
+        <div id="masm" class="code-snippet">
+            <h2>MASM Assembler</h2>
+            <h4>by Andrew S. Tanenbaum (?) ... 
+                <a href="https://docs.racket-lang.org/mic1/index.html" target="_blank">documentation</a>
+
+            </h4>
+
+            <script>
+                fetch('masm.txt')
+                    .then(response => response.text())
+                    .then(code => {
+                        document.querySelector('#masm pre code').textContent = code;
+                    })
+                    .catch(error => console.error('Error fetching the file:', error));
+            </script>
+
+<pre><code>
+    <!-- code from script goes here -->
+</code></pre>
+
+        </div>
+    </div>
+</body>
+</html>

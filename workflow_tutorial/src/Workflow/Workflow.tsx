@@ -1,5 +1,6 @@
 import React, {
-    useCallback
+    useCallback,
+    useState,
 } from "react";
 
 import { useRef } from "react";
@@ -17,104 +18,119 @@ import ReactFlow, {
 } from "reactflow";
 
 import "reactflow/dist/style.css";
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 
 import { initialEdges, initialNodes } from "./Workflow.constants";
-import IframeNode from "./IframeNode";
-import CustomEdge from "./CustomEdge";
-import DocumentNode from "./DocumentNode";
-import TitleNode from "./TitleNode";
-import LinkNode from "./LinkNode";
-import NameNode from "./NameNode";
-
-import SpaceScene from "./space.js"
-
-
-// const initialNodes: Node[] = [
-//     {
-//         id: "1", // must be unique
-//         data:{
-//             label: "Node 1"
-//         },
-//         position:{x:0, y:0},
-//     },
-//     {
-//         id: "2",
-//         data:{
-//             label: "Node 2"
-//         },
-//         position:{x:200, y:200}
-//     },
-// ];
-
-// const initialEdges:Edge[] = [
-//     {
-//         id:'1-2', // must be unique
-//         source: "1", 
-//         target: "2",
-//         animated: true,
-//     }
-// ];
-
+import HTMLNode from "./HTMLNode";
 
 const nodeTypes = {
-    // paymentInit:PaymentInit,
-    iframeNode:IframeNode,
-    titleNode:TitleNode,
-    documentNode:DocumentNode,
-    linkNode:LinkNode,
-    nameNode:NameNode,
+    htmlNode: HTMLNode,
 }
 
-const edgeTypes = {
-    customEdge:CustomEdge,
-}
-
-
+const edgeTypes = {}
 
 export const Workflow = () => {
 
     // hooks:
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges)
-    
+    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [isWorkflowMode, setIsWorkflowMode] = useState(false);
 
     const onConnect = useCallback((connection: Connection) => {
-        const edge = {...connection, animated:true, id:`${edges.length} + 1`, type:"customEdge"}; // SPECIFY TYPE
+        const edge = { ...connection, animated: true, id: `${edges.length} + 1`, type: "customEdge" }; // SPECIFY TYPE
         setEdges((prevEdges) => addEdge(edge, prevEdges));
-    },[])
-    
+    }, [edges.length])
+
+    const toggleLayout = useCallback(() => {
+        setIsWorkflowMode((prev) => {
+            if (prev) {
+                // Reset to initial standard view when switching to site mode
+                setNodes(initialNodes);
+                setEdges(initialEdges);
+                // Reset viewport
+                const viewport = document.querySelector('.react-flow__viewport');
+                if (viewport) {
+                    (viewport as HTMLElement).style.transform = 'translate(0px, 0px) scale(1)';
+                }
+            }
+            return !prev;
+        });
+    }, []);
 
     return (
         <>
+            <Box height="100vh" width="100vw" overflow="auto">
+                {isWorkflowMode ? (
+                    <ReactFlow
+                        nodes={nodes}
+                        // nodes={nodes.map(node => ({
+                        //     ...node,
+                        //     style: {
+                        //         ...node.style,
+                        //         border: isWorkflowMode ? '2px solid blue' : '1px solid black',
+                        //         backgroundColor: isWorkflowMode ? '#e0f7fa' : '#ffffff',
+                        //         width: '150px', // Set a fixed width for nodes
+                        //         height: '50px', // Set a fixed height for nodes
+                        //     },
+                        // }))}
+                        nodeTypes={nodeTypes}
+                        edges={edges}
+                        onNodesChange={onNodesChange}
+                        onEdgesChange={onEdgesChange}
+                        onConnect={onConnect}
+                        fitView
+                        panOnDrag={isWorkflowMode} // Allow dragging only in workflow mode
+                        nodesDraggable={isWorkflowMode} // Make nodes draggable only in workflow mode
+                        zoomOnScroll={isWorkflowMode} // Disable zooming in site mode
+                        panOnScroll={!isWorkflowMode} // Disable panning in site mode
+ // Make elements selectable only in site mode
+                        style={{ backgroundColor: isWorkflowMode ? '#f0f0f0' : 'black' }}
+                    >
+                        {isWorkflowMode && <Background gap={20} />} {/* Only show background in workflow mode */}
+                        {isWorkflowMode && <Controls />} {/* Only show controls in workflow mode */}
+                        {isWorkflowMode && <MiniMap />} {/* Only show MiniMap in workflow mode */}
+                    </ReactFlow>
+                ) : (
+                    <Box height="100%" overflowY="auto">
+                        {nodes.map((node) => (
+                            <Box key={node.id} p={0} m={0} border="1px solid black">
+                                <iframe 
+                                    src={node.data.link} 
+                                    title={node.data.title} 
+                                    width="100%" 
+                                    style={{ minHeight: '150px', height: 'auto' }} 
+                                    onLoad={(e) => {
+                                        const iframe = e.target as HTMLIFrameElement;
+                                        if (iframe.contentWindow) {
+                                            iframe.style.height = iframe.contentWindow.document.body.scrollHeight + 'px';
+                                        }
+                                    }}
+                                />
+                            </Box>
+                        ))}
+                    </Box>
+                )}
 
-            <Box height={"100vh"} width={"100vw"}>
-                <ReactFlow 
-                    nodes={nodes} 
-                    edges={edges} 
-                    onNodesChange={onNodesChange} 
-                    onEdgesChange={onEdgesChange} 
-                    onConnect={onConnect}
-                    nodeTypes={nodeTypes}
-                    edgeTypes={edgeTypes}
-                    fitView 
-                    style={{ backgroundColor: 'black' }}
-                    fitViewOptions={{ padding: 0.2 }}
+                <Box
+                    position="absolute"
+                    top={10}
+                    right={10}
+                    style={{ zIndex: 10, display: 'flex', flexDirection: 'column' }}
+                    fontFamily="FreeMono, monospace"
                 >
-                    <Background gap={100}/>
-                    <Controls/>
-                    <MiniMap/>
-                    
-                    <SpaceScene></SpaceScene>
-                    
-                </ReactFlow>
-                
+                    <Button 
+                        variant="solid" 
+                        colorScheme="teal" 
+                        size="lg" 
+                        onClick={toggleLayout}
+                        boxShadow="lg"
+                        _hover={{ boxShadow: "xl", transform: "scale(1.05)" }}
+                        _active={{ boxShadow: "md", transform: "scale(0.95)" }}
+                    >
+                        {isWorkflowMode ? 'Switch to Site Mode' : 'Magic Button (under development!!!)'}
+                    </Button>
+                </Box>
             </Box>
         </>
     );
-
 };
-
-
-
-

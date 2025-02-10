@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Hobbies</title>
+    <style>
+        body {
+            font-family: 'FreeMono', monospace;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .item {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 1rem;
+            overflow: hidden;
+            width: 300px;
+        }
+        .item img, .item video {
+            width: 100%;
+            height: auto;
+        }
+        .item h3 {
+            margin: 0;
+            padding: 1rem;
+            background-color: #333;
+            color: white;
+            text-align: center;
+        }
+        .item p {
+            padding: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Hobbies</h1>
+    </header>
+    <div class="container">
+        <div class="item">
+            <img src="./travel4.jpg" alt="Travelling">
+            <img src="./travel2.jpg" alt="Travelling">
+            <img src="./travel3.jpg" alt="Travelling">
+            <h3>Travelling with friends!</h3>
+            <p>
+                I have been to at least 15 different states, 10 national parks and 5 other countries...but my favorite place by far is Acadia National park.
+            </p>
+        </div>
+        <div class="item">
+            <img src="./piano.jpg" alt="Hobby 2">
+            <h3>Piano</h3>
+            <p>
+                I am not a bucket list person but if I had to say one thing, it would be to play every free-standing piano I lay my eyes on.
+                Currently I am teaching myself jazz/blues and can play some fun classics like Billy Joel, Elton John and Elvis...
+            </p>
+        </div>
+        <div class="item">
+            <video controls>
+                <source src="./climbing_burden.mp4" type="video/mp4">
+            </video>
+            <h3>Climbing</h3>
+            <p>
+                Here is a super fun recreation of the famous Burden of Dreams V17 climb. The Shawn Raboutou video got me into climbing originally,
+                and I'm also a big fan of his sister Brooke, who competes and got silver in the 2024 Olympics.
+            </p>
+        </div>
+        <div class="item">
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/4MWeJl1tZvLFkHwgigA7Ld?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>        
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/0HBR8ufW3JSyuNvs4jjdmb?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <h3>My Favorite Playlists</h3>
+        <p>I often listen to music and here are two of my favorite playlists. My tastes range all over the place, from funky jazz pop, to 90's rap and sometimes even movie soundtracks...</p>
+        </div>
+    </div>
+</body>
+</html>

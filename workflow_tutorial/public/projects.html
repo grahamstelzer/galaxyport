@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects</title>
+    <style>
+        html, body {
+            overflow: hidden;
+            height: 500px;
+            margin: 0;
+        }
+        body {
+            font-family: 'FreeMono', monospace;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #e0e0e0;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        li:hover {
+            transform: scale(1.05);
+            background-color: #d0d0d0;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Projects</h1>
+        <ul>
+            <li><a href="projects/project1.html">AI Climbing Software (interactive diagram)</a></li>
+            <li><a href="https://github.com/grahamstelzer/transformer">Transformer from scratch (github)</a></li>
+            <li><a href="projects/project3.html">Project 3</a></li>
+            <li><a href="projects/project4.html">Project 4</a></li>
+        </ul>
+    </div>
+</body>
+</html>
