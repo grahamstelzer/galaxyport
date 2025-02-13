@@ -127,7 +127,7 @@ export const Workflow = () => {
                         _hover={{ boxShadow: "xl", transform: "scale(1.05)" }}
                         _active={{ boxShadow: "md", transform: "scale(0.95)" }}
                     >
-                        {isWorkflowMode ? 'Switch to Site Mode' : 'Magic Button (under development!!!)'}
+                        {isWorkflowMode ? 'Switch to Site Mode' : 'Magic Button (under development)'}
                     </Button>
                 </Box>
             </Box>

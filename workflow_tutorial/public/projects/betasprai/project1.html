@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+        }
+        .back-button {
+            display: inline-block;
+            margin: 0px 0;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+
+        #wflow-title {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            max-width: 10%;
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #333;
+        }
+
+        #wflow {
+            display: block;
+            margin: 0 auto;
+            border: 2px solid #000;
+            width: 75vw;
+            height: 75vh;
+            max-height: 500px;
+            max-width: 1200px;
+            border-radius: 10px;
+        }
+
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin: 50px 0;
+        }
+        #timeline-title {
+            position: relative;
+            margin-top: 20px;
+            font-size: 24px;
+            color: #333;
+        }
+        .timeline-item {
+            position: relative;
+            width: 100%;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px solid rgba(0, 0, 0, 1);
+            border-radius: 2cqh;
+        }
+        .timeline-image {
+            width: 30%;
+            height: auto;
+            border:rgba(0, 0, 0, 1);
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            margin: 30px;
+        }
+        .timeline-content {
+            position: absolute;
+            top: 50%;
+            left: 17%;
+            max-width: 30%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .timeline-item:hover .timeline-image {
+            transform: scale(1.1);
+        }
+        .timeline-item:hover .timeline-content {
+            opacity: 1;
+        }
+    </style>
+  </head>
+  <body>
+    <a href="/projects.html" class="back-button">Back to Projects</a>
+
+    <h2 id="wflow-title">Interactive Project Architecture V1</h2>
+    <iframe id="wflow" src="./workflow.html"></iframe>
+
+    <div class="timeline">
+        <h2 id="timeline-title">Timeline and items:</h2>
+
+        <div class="timeline-item">
+            <video src="" alt="Image 1" class="timeline-image"></video>
+            <div class="timeline-content">
+                <h3>Video Landmark Tracking</h3>
+                <p>Very simple via OpenCV. We will use the x,y,z coordinates for our dataset.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <img src="betasprai_landmarktracking.png" alt="Image 1" class="timeline-image">
+            <div class="timeline-content">
+                <h3>Landmarks Visual</h3>
+                <p>3D graph of my left ankle through time. Purple is starting, finish is yellow.</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <img src="betasprai_cog.png" alt="Image 2" class="timeline-image">
+            <div class="timeline-content">
+                <h3>Center of Gravity</h3>
+                <p>I have done a little bit of research on finding center of mass from a still image (in this case, frames), but in general there does not seem to be
+                    many resources. This is a visual I found from a MIT homework assignment.
+                </p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <img src="betasprai_LSTMfitment.png" alt="Image 3" class="timeline-image">
+            <div class="timeline-content">
+                <h3>LSTM Test Run</h3>
+                <p>This is the prediction of the LSTM run on a single coordinate. As we can see, not the most accurate.</p>
+            </div>
+        </div>
+    </div>
+    
+  </body>
+</html>
