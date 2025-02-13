@@ -20,7 +20,7 @@
     "@react-three/fiber": "^8.17.10",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.0.23",
-    "package.json": "^2.0.1",
+    "package.json": "^0.0.0",
     "react": "^18.3.1",
     "react-bootstrap-icons": "^1.11.3",
     "react-country-flag": "^3.1.0",
