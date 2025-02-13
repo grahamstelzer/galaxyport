@@ -13,6 +13,7 @@
             line-height: 1.6;
             background-color: #f4f4f4;
             color: #333;
+            min-height: 500px;
         }
 
         header {
@@ -31,39 +32,91 @@
             background: #fff;
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            border-radius: 2px;
         }
 
         p {
             margin: 0;
         }
+
+        #main {
+            position: relative;
+            float: left;
+            margin-bottom: 20px;
+        }
+
+        #secondary {
+            position: absolute;
+            z-index: 4;
+            right: 10px;
+            top: 20px;
+            width: 20%;
+            background-color: #eaeaea;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        #secondary p {
+            font-size: 0.8em;
+        }
+
     </style>
 
 </head>
 <body>
-    <header>
-        <h1>About Me</h1>
-    </header>
-    <section>
-        <p><h3><b>Hello! My name is Graham...</b></h3>I am a software developer with a passion for anything and 
-            everything to do with <b>deep learning</b>. I also enjoy researching <b>optimization tasks</b>, whether
-            for <b>faster matmults</b>, speedier <b>full-stack communication</b>, or even <b>quantum computing tasks</b>!
+    <div id="main">
+        <header>
+            <h1>About Me</h1>
+        </header>
+        <section>
+            <p><h3><b>Hello! My name is Graham...</b></h3>I am a software developer with a passion for anything and 
+                everything to do with <b>deep learning</b>. I also enjoy researching <b>optimization tasks</b>, whether
+                for <b>faster matmults</b>, speedier <b>full-stack communication</b>, or even <b>quantum computing tasks</b>!
+                
+                <br>
+                <br>
+
+                I recently graduated from UMASS Lowell with a 
+                degree in <b>Computer Science (AI/ML)</b> and a <b>3.6 GPA</b>, and am currently researching
+                Master's Programs to apply to.
+
+                <br>
+                <br>
+
+                In my free time, I frequent rock climbing gyms, and can currently climb V7-V9! I like to
+                play old FPS games that use the Source Engine (TF2, CS2, Apex) and will always enjoy
+                a good conversation about philosophy.
             
-            <br>
+            
+            </p>
+        </section>
+    </div>
+
+    <div id="secondary">
+        <header>
+            <h5>Technologies/Languages/Interests:</h2>
+        </header>
+        <section>
+            <p>
+                Python, C/C++, SQL, Go, JavaScript/TypeScript, HTML/CSS
+            </p>
+
             <br>
 
-            I recently graduated from UMASS Lowell with a 
-            degree in <b>Computer Science (AI/ML)</b> and a <b>3.6 GPA</b>, and am currently researching
-            Master's Programs to apply to.
+            <p>
+                PyTorch/LibTorch, Vue.js, React, AWS, WSL, Git, Jira, MongoDB/PostgreSQL
+            </p>
 
             <br>
-            <br>
 
-            In my free time, I frequent rock climbing gyms, and can currently climb V7-V9! I like to
-            play old FPS games that use the Source Engine (TF2, CS2, Apex) and will always enjoy
-            a good conversation about philosophy.
-        
-        
-        </p>
+            <p>
+                Deep learning, Optimization tasks, MLOps, Backend
+            </p>
+
+        </section>
+    </div>
+
+
+
 </body>
 </html>
