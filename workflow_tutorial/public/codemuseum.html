@@ -6,68 +6,124 @@
     <title>Code Museum</title>
     <style>
         body {
-            font-family: 'FreeMono', monospace;
+            font-family: freemono, sans-serif;
             margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 1rem;
-            text-align: center;
-        }
-        .container {
             display: flex;
-            flex-wrap: wrap;
-            padding: 2rem;
-        }
-        .code-snippet {
-            overflow: auto;
-            max-height: 400px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 1rem;
-            padding: 1rem;
-            width: calc(33.333% - 2rem);
-            box-sizing: border-box;
-        }
-        .code-snippet pre {
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 1rem;
-            overflow-x: auto;
-        }
-        .code-snippet h2 {
-            margin-top: 0;
-        }
-        @media (max-width: 768px) {
-            .code-snippet {
-                width: calc(50% - 2rem);
-            }
-        }
-        @media (max-width: 480px) {
-            .code-snippet {
-                width: 100%;
-            }
+            flex-direction: column;
+            min-height: 800px; /*necessary for the iframes*/
+            overflow:hidden;
+            background-color: #f0f0f0;
         }
 
-        #description {
-            background-color: #fff;
-            border: 1px solid #ddd;
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #ffffff;
+            width: 40%;
+            border-radius: 8px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .description {
+            text-align: center;
+            padding: 10px;
+            background-color: #eaeaea;
+            width: 100%;
+        }
+
+        .container {
+            display: flex;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        .sidebar {
+            width: 100px;
+            background-color: #333;
+            color: white;
+            padding: 15px;
+            height: 100vh;
+            position: fixed;
+            transition: width 0.3s;
+            overflow: hidden;
+            white-space: nowrap; /* no text wrapping */
+            text-overflow: ellipsis; /* display ellipses when text overflows */
+        }
+
+        .sidebar:hover {
+            width: 200px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+        }
+
+        .sidebar ul li a:hover {
+            text-decoration: underline;
+        }
+
+        .content {
+            margin-left: 120px;
+            padding: 20px;
+            flex-grow: 1;
+            transition: margin-left 0.3s;
+        }
+
+        .sidebar:hover ~ .content {
+            margin-left: 200px;
+        }
+
+        .card {
+            background-color: #f9f9f9;
+            padding: 20px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 1rem auto;
-            padding: 1rem;
-            width: calc(100% - 4rem);
-            box-sizing: border-box;
-            max-width: 800px;
+            margin: 25px;
         }
-        #description p {
-            text-align: center;
+
+
+        
+        pre {
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre;
+            position: relative;
+        }
+        .code-line {
+            display: inline-block; /* remove extra vertical space */
+            max-width: 500px; 
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .code-line:hover {
+            background-color: black;
+            color: white;
+        }
+
+        #infoBox {
+            position: fixed;
+            right: 200px;
+            top: 50%;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: none;
         }
     </style>
 </head>
@@ -75,76 +131,152 @@
     <header>
         <h1>Code Museum</h1>
     </header>
-    <div id="description">
-        <p> Some of my favorite code snippets...</p>
+
+    <div class="description">
+        <p>Analysis of some of my favorite code snippets...</p>
     </div>
+
     <div class="container">
-        <div id="fizzbuzz" class="code-snippet">
-            <h2>High Throughput FizzBuzz</h2>
-            <h4>by David Frank ... 
-                <a href="https://codegolf.stackexchange.com/questions/215216/high-throughput-fizz-buzz/236630#236630" target="_blank">stack exchange</a>
-            </h4>
+        <nav class="sidebar">
+            <ul>
+                <li><a href="#" onclick="showCard('card1')">Fast Inverse Square Root</a></li>
+                <li><a href="#" onclick="showCard('card2')">Card 2</a></li>
+                <li><a href="#" onclick="showCard('card3')">Card 3</a></li>
+            </ul>
+        </nav>
+        <main class="content">
 
-            <script>
-                fetch('fb.txt')
-                    .then(response => response.text())
-                    .then(code => {
-                        document.querySelector('#fizzbuzz pre code').textContent = code;
-                    })
-                    .catch(error => console.error('Error fetching the file:', error));
-            </script>
+            <div id="card1" class="card" style="display:none;">
 
-<pre><code>
-    <!-- code from script goes here -->
-</code></pre>
 
-        </div>
-        <div class="code-snippet">
-            <h2>Fast Inverse Square Root</h2>
-            <h4>from Quake III Arena ... 
-                <a href="https://en.wikipedia.org/wiki/Fast_inverse_square_root" target="_blank">wiki</a>
+                <h2>Fast Inverse Square Root from Quake III Arena</h2>
+                <p>
+                    Reasoning: Given a 3D vector x, y and z, what if we want to normalize it to 1? We can do: x,y,z * 1/sqrt(x^2 + y^2 + z^2)...
+                </p>
 
-            </h4>
-<pre><code>
-float Q_rsqrt( float number )
-{
+                <pre id="codeBlock">
+                    <code>
+<div class="code-line" 
+    data-description="Defines a function named hello_world.">
+/* Fast Inverse Square Root */
+float Q_rsqrt(float number)
+{</div>
+<div class="code-line" 
+    data-description="analysis here">
     long i;
+</div>
+<div class="code-line" 
+    data-description="analysis here">
     float x2, y;
+</div>
+<div class="code-line" 
+    data-description="analysis here">
     const float threehalfs = 1.5F;
+</div>
 
+<div class="code-line" 
+    data-description="analysis here">
     x2 = number * 0.5F;
     y  = number;
-    i  = * ( long * ) &y;						// evil floating point bit level hacking
-    i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
-    y  = * ( float * ) &i;
-    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-//	y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+</div>
 
-    return y;
-}
-</code></pre>
-        </div>
-        <div id="masm" class="code-snippet">
-            <h2>MASM Assembler</h2>
-            <h4>by Andrew S. Tanenbaum (?) ... 
-                <a href="https://docs.racket-lang.org/mic1/index.html" target="_blank">documentation</a>
+<div class="code-line" 
+    data-description="analysis here">
+    x2 = number * 0.5F;
+    y  = number;
+</div>
 
-            </h4>
+</div>
 
-            <script>
-                fetch('masm.txt')
-                    .then(response => response.text())
-                    .then(code => {
-                        document.querySelector('#masm pre code').textContent = code;
-                    })
-                    .catch(error => console.error('Error fetching the file:', error));
-            </script>
+                    </code>
+                </pre>
 
-<pre><code>
-    <!-- code from script goes here -->
-</code></pre>
 
-        </div>
+                <div id="infoBox"></div>
+
+                <!-- <pre id="codeBlock">
+                    <code>
+                        /* Fast Inverse Square Root */
+                        float Q_rsqrt(float number)
+                        {
+                            long i;
+                            float x2, y;
+                            const float threehalfs = 1.5F;
+        
+                            x2 = number * 0.5F;
+                            y  = number;
+                            i  = * ( long * ) &y;                       // evil floating point bit level hacking
+                            i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
+                            y  = * ( float * ) &i;
+                            y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+                            // y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+        
+                            return y;
+                        }
+                    </code>
+                </pre> -->
+                    
+                <script>
+                    const infoBox = document.getElementById('infoBox');
+                
+                    document.querySelectorAll('.code-line').forEach(line => {
+                        line.addEventListener('click', function() {
+                            const description = this.dataset.description || "No description available.";
+                            
+                            // Show and update info box
+                            infoBox.innerText = description;
+                            infoBox.style.display = "block";
+                        });
+                    });
+                </script>
+
+<!-- 
+                <pre>
+                <code>
+                /* Fast Inverse Square Root */
+                float Q_rsqrt( float number )
+                {
+                    long i;
+                    float x2, y;
+                    const float threehalfs = 1.5F;
+
+                    x2 = number * 0.5F;
+                    y  = number;
+                    i  = * ( long * ) &y;                       // evil floating point bit level hacking
+                    i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
+                    y  = * ( float * ) &i;
+                    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+                    // y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+
+                    return y;
+                }
+                </code>
+                </pre> -->
+
+
+            </div>
+
+            <div id="card2" class="card" style="display:none;">
+                <h2>Card 2</h2>
+                <p>This is the content of Card 2.</p>
+            </div>
+
+            <div id="card3" class="card" style="display:none;">
+                <h2>Card 3</h2>
+                <p>This is the content of Card 3.</p>
+            </div>
+
+        </main>
     </div>
+
+    <script>
+        function showCard(cardId) {
+            var cards = document.querySelectorAll('.card');
+            cards.forEach(function(card) {
+                card.style.display = 'none';
+            });
+            document.getElementById(cardId).style.display = 'block';
+        }
+    </script>
 </body>
 </html>
