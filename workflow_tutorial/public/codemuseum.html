@@ -104,28 +104,53 @@
         }
         .code-line {
             display: inline-block; /* remove extra vertical space */
-            max-width: 500px; 
-            cursor: pointer;
+            /* max-width: 500px;  */
+            cursor:default;
             transition: background-color 0.3s;
         }
-
+/* 
         .code-line:hover {
+            background-color: black;
+            color: white;
+        } */
+
+        #infoBox {
+            display: inline-block;
+            width: 55%;
+            background-color: #fff;
+            padding: 10px;  
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            vertical-align: top;
+            margin-top: 35px;
+            font-size: 1.2em; /* Increase text size */
+        }
+        #codeBlock {
+            display: inline-block;
+            width: 35%;
+            vertical-align: top;
+            margin-top: 20px;
+            font-size: 1.2em; /* Increase text size */
+        }
+        
+        .blackhighlight {
             background-color: black;
             color: white;
         }
 
-        #infoBox {
-            position: fixed;
-            right: 200px;
-            top: 50%;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: none;
+        .redhighlight {
+            background-color: rgb(255, 0, 0);
+            color: white;
         }
     </style>
+
+    <!-- show card1 on load -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            showCard('card1');
+        });
+    </script>
+
 </head>
 <body>
     <header>
@@ -156,43 +181,157 @@
 
                 <pre id="codeBlock">
                     <code>
-<div class="code-line" 
-    data-description="Defines a function named hello_world.">
+                        
+<div class="code-line" id="func_def">
 /* Fast Inverse Square Root */
-float Q_rsqrt(float number)
+float Q_rsqrt(<div class="code-line var2">float number</div>)
 {</div>
-<div class="code-line" 
-    data-description="analysis here">
+
+<div class="code-line var1">
     long i;
 </div>
-<div class="code-line" 
-    data-description="analysis here">
+
+<div class="code-line var2">
     float x2, y;
 </div>
-<div class="code-line" 
-    data-description="analysis here">
+
+<div class="code-line" id="const_var1">
     const float threehalfs = 1.5F;
 </div>
 
-<div class="code-line" 
-    data-description="analysis here">
+<div class="code-line" id="var_copy">
     x2 = number * 0.5F;
     y  = number;
 </div>
 
-<div class="code-line" 
-    data-description="analysis here">
-    x2 = number * 0.5F;
-    y  = number;
+<div class="code-line var1">
+    i  = * ( long * ) &y;          // evil floating point bit level hacking
+    i  = 0x5f3759df - ( i >> 1 );  // what the fuck?
 </div>
 
+<div class="code-line var2">
+    y  = * ( float * ) &i;
 </div>
+
+<div class="code-line">
+    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
+    // y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
+</div>
+
+
+<div class="code-line">
+    return y;
+}
+</div>
+
+
 
                     </code>
                 </pre>
 
+<div id="infoBox">
 
-                <div id="infoBox"></div>
+    <code>
+Explanation:
+This code basically exploits the way values are stored in memory. We will make use of the fact that: 
+<br>
+<br>
+<div class="code-line var1">1. long values are stored as binary strings in 2's complement representation</div>
+<br>
+<br>
+<div class="code-line var2">2. float values are stored as IEEE floating point representation.</div>
+<br>
+<br>
+
+...
+algo that i will make more readable later:
+given decimal number we want to calc 1/sqrt(decimal number)
+so
+since in ieee fp (s, e, m) binary string
+convert to int rep so will not mess s, e, m
+shift right 1
+magic value
+convert background
+return
+
+why:
+y = 1/sqrt(x)
+log_2(y) = -1/2(log_2(x)) // log rules
+
+log_2(x) can be approximated as exp(x) + mant(x) + constant
+since
+x = 2^e_x(1 + m_x) but take the log, consider that log(1 + val_between_0_and_1) "=" val_between_0_and_1 + constant
+where right side derived from
+single_precision_nonzero_real_x_normalized = +-1.[b1][b2]...*2^(e_x) // note: e_x not eulers, just num of bits for normalization
+to
+single_precision_nonzero_real_x_normalized = (-1)^(sign_bit) * 2^(exp_bits)(1 + mant_bits) // mant bits are 0.[b1][b2][b3]...
+and now calc 3 unsigned integers:
+S = sign bit (0/1) // assume always positive so 0
+E = exp_bits + 127 // exponent bias, this will account for negative numbers in the range of fp we can representation
+M = mant_bits * L // where L = 2^23 since we are utilizing 23 bits for the mantissa
+rearrange, plug into equation, considering S = 0 (always pos)
+x = 2^exp_bits(1 + mant_bits)
+now if we take log_2(x) we get our initial:
+log_2(x) = exp(x) + mant(x) + constant
+and also, lets rearrange some values
+x = 2^exp_bits(1 + mant_bits)
+becomes:
+x = 2^23(e + 127 + m)
+x = 2^23(e + m + constant + B - constant) // move around m, create constant, this lets us "discover" log_2(x)
+x = 2^23(log_2(x) + B - constant) 
+x = 2^23(log_2(x)) + 2^23(B - constant)
+solve for log_2(x)
+log_2(x) = x/(2^23) - (B - constant)
+
+now plug this into eq with y:
+log_2(y) = y/(2^23) - (B - constant) = (-1/2)(log_2(x) = x/(2^23) - (B - constant))
+
+solve for y:
+y = (3/2)(2^23)(B - constant) - (1/2)x
+which in code, using a constant for the first terms:
+i = 0x5f3759df - (i >> 1) // note that i is the long rep of input
+
+
+
+
+
+
+    </code>
+
+
+</div>
+
+            </div>
+
+<script>
+    const blackitems = document.querySelectorAll(".var1");
+
+    blackitems.forEach(blackitem => {
+        blackitem.addEventListener("mouseenter", () => {
+            blackitems.forEach(el => el.classList.add("blackhighlight"));
+        });
+        blackitem.addEventListener("mouseleave", () => {
+            blackitems.forEach(el => el.classList.remove("blackhighlight"));
+        });
+    }); 
+</script>
+
+<script>
+    const reditems = document.querySelectorAll(".var2");
+
+    reditems.forEach(reditem => {
+        reditem.addEventListener("mouseenter", () => {
+            reditems.forEach(el => el.classList.add("redhighlight"));
+        });
+        reditem.addEventListener("mouseleave", () => {
+            reditems.forEach(el => el.classList.remove("redhighlight"));
+        });
+    }); 
+</script>
+
+
+
+
 
                 <!-- <pre id="codeBlock">
                     <code>
@@ -216,20 +355,6 @@ float Q_rsqrt(float number)
                     </code>
                 </pre> -->
                     
-                <script>
-                    const infoBox = document.getElementById('infoBox');
-                
-                    document.querySelectorAll('.code-line').forEach(line => {
-                        line.addEventListener('click', function() {
-                            const description = this.dataset.description || "No description available.";
-                            
-                            // Show and update info box
-                            infoBox.innerText = description;
-                            infoBox.style.display = "block";
-                        });
-                    });
-                </script>
-
 <!-- 
                 <pre>
                 <code>
