@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,9 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            min-height: 800px; /*necessary for the iframes*/
-            overflow:hidden;
+            min-height: 800px;
+            /*necessary for the iframes*/
+            overflow: hidden;
             background-color: #f0f0f0;
         }
 
@@ -47,8 +49,10 @@
             position: fixed;
             transition: width 0.3s;
             overflow: hidden;
-            white-space: nowrap; /* no text wrapping */
-            text-overflow: ellipsis; /* display ellipses when text overflows */
+            white-space: nowrap;
+            /* no text wrapping */
+            text-overflow: ellipsis;
+            /* display ellipses when text overflows */
         }
 
         .sidebar:hover {
@@ -81,7 +85,7 @@
             transition: margin-left 0.3s;
         }
 
-        .sidebar:hover ~ .content {
+        .sidebar:hover~.content {
             margin-left: 200px;
         }
 
@@ -91,10 +95,11 @@
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin: 25px;
+            display: none;
         }
 
 
-        
+
         pre {
             padding: 10px;
             border-radius: 5px;
@@ -102,13 +107,16 @@
             white-space: pre;
             position: relative;
         }
+
         .code-line {
-            display: inline-block; /* remove extra vertical space */
+            display: inline-block;
+            /* remove extra vertical space */
             /* max-width: 500px;  */
-            cursor:default;
+            cursor: default;
             transition: background-color 0.3s;
         }
-/* 
+
+        /* 
         .code-line:hover {
             background-color: black;
             color: white;
@@ -118,21 +126,24 @@
             display: inline-block;
             width: 55%;
             background-color: #fff;
-            padding: 10px;  
+            padding: 10px;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             vertical-align: top;
             margin-top: 35px;
-            font-size: 1.2em; /* Increase text size */
+            font-size: 1.2em;
+            /* Increase text size */
         }
+
         #codeBlock {
             display: inline-block;
             width: 35%;
             vertical-align: top;
             margin-top: 20px;
-            font-size: 1.2em; /* Increase text size */
+            font-size: 1.2em;
+            /* Increase text size */
         }
-        
+
         .blackhighlight {
             background-color: black;
             color: white;
@@ -146,95 +157,88 @@
 
     <!-- show card1 on load -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             showCard('card1');
         });
     </script>
 
 </head>
+
 <body>
     <header>
         <h1>Code Museum</h1>
     </header>
 
     <div class="description">
-        <p>Analysis of some of my favorite code snippets...</p>
+        <p>Analysis of some code snippets I've come across...</p>
     </div>
 
     <div class="container">
         <nav class="sidebar">
             <ul>
                 <li><a href="#" onclick="showCard('card1')">Fast Inverse Square Root</a></li>
-                <li><a href="#" onclick="showCard('card2')">deepseek optimization</a></li>
+                <li><a href="#" onclick="showCard('card2')">deepseek</a></li>
                 <li><a href="#" onclick="showCard('card3')">loop unrolling</a></li>
                 <li><a href="#" onclick="showCard('card4')">faster matmults</a></li>
                 <li><a href="#" onclick="showCard('card5')">assembly</a></li>
                 <li><a href="#" onclick="showCard('card6')">bunnyhop</a></li>
             </ul>
         </nav>
+    </div>
+
         <main class="content">
 
+
+
+            <!-- start card1 -->
             <div id="card1" class="card" style="display:none;">
-
-
                 <h2>Fast Inverse Square Root from Quake III Arena</h2>
                 <p>
-                    Reasoning: Given a 3D vector x, y and z, what if we want to normalize it to 1? We can do: x,y,z * 1/sqrt(x^2 + y^2 + z^2)...
+                    Reasoning: Given a 3D vector x, y and z, what if we want to normalize it to 1? We can do: x,y,z *
+                    1/sqrt(x^2 + y^2 + z^2)...
                 </p>
 
                 <pre id="codeBlock">
-                    <code>
-                        
+<code>                     
 <div class="code-line" id="func_def">
 /* Fast Inverse Square Root */
 float Q_rsqrt(<div class="code-line var2">float number</div>)
 {</div>
-
 <div class="code-line var1">
     long i;
 </div>
-
 <div class="code-line var2">
     float x2, y;
 </div>
-
 <div class="code-line" id="const_var1">
     const float threehalfs = 1.5F;
 </div>
-
 <div class="code-line" id="var_copy">
     x2 = number * 0.5F;
     y  = number;
 </div>
-
 <div class="code-line var1">
     i  = * ( long * ) &y;          // evil floating point bit level hacking
     i  = 0x5f3759df - ( i >> 1 );  // what the fuck?
 </div>
-
 <div class="code-line var2">
     y  = * ( float * ) &i;
 </div>
-
 <div class="code-line">
     y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
     // y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
 </div>
-
-
 <div class="code-line">
     return y;
 }
 </div>
-
-
-
-                    </code>
+</code>
                 </pre>
 
-<div id="infoBox">
 
-    <code>
+                <div id="infoBox">
+
+                    <code>
 Explanation:
 This code basically exploits the way values are stored in memory. We will make use of the fact that: 
 <br>
@@ -294,131 +298,119 @@ y = (3/2)(2^23)(B - constant) - (1/2)x
 which in code, using a constant for the first terms:
 i = 0x5f3759df - (i >> 1) // note that i is the long rep of input
 
-
-
-
-
-
     </code>
 
-
-</div>
-
-            </div>
-
-<script>
-    const blackitems = document.querySelectorAll(".var1");
-
-    blackitems.forEach(blackitem => {
-        blackitem.addEventListener("mouseenter", () => {
-            blackitems.forEach(el => el.classList.add("blackhighlight"));
-        });
-        blackitem.addEventListener("mouseleave", () => {
-            blackitems.forEach(el => el.classList.remove("blackhighlight"));
-        });
-    }); 
-</script>
-
-<script>
-    const reditems = document.querySelectorAll(".var2");
-
-    reditems.forEach(reditem => {
-        reditem.addEventListener("mouseenter", () => {
-            reditems.forEach(el => el.classList.add("redhighlight"));
-        });
-        reditem.addEventListener("mouseleave", () => {
-            reditems.forEach(el => el.classList.remove("redhighlight"));
-        });
-    }); 
-</script>
-
-
-
-
-
-                <!-- <pre id="codeBlock">
-                    <code>
-                        /* Fast Inverse Square Root */
-                        float Q_rsqrt(float number)
-                        {
-                            long i;
-                            float x2, y;
-                            const float threehalfs = 1.5F;
-        
-                            x2 = number * 0.5F;
-                            y  = number;
-                            i  = * ( long * ) &y;                       // evil floating point bit level hacking
-                            i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
-                            y  = * ( float * ) &i;
-                            y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-                            // y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-        
-                            return y;
-                        }
-                    </code>
-                </pre> -->
-                    
-<!-- 
-                <pre>
-                <code>
-                /* Fast Inverse Square Root */
-                float Q_rsqrt( float number )
-                {
-                    long i;
-                    float x2, y;
-                    const float threehalfs = 1.5F;
-
-                    x2 = number * 0.5F;
-                    y  = number;
-                    i  = * ( long * ) &y;                       // evil floating point bit level hacking
-                    i  = 0x5f3759df - ( i >> 1 );               // what the fuck?
-                    y  = * ( float * ) &i;
-                    y  = y * ( threehalfs - ( x2 * y * y ) );   // 1st iteration
-                    // y  = y * ( threehalfs - ( x2 * y * y ) );   // 2nd iteration, this can be removed
-
-                    return y;
-                }
-                </code>
-                </pre> -->
-
+                </div>
 
             </div>
+            <!-- end card1 -->
 
-            <div id="deepseek optimization" class="card" style="display:none;">
-                <h2>deepseek optimization</h2>
-                <p>...</p>
+
+            <!-- start card2 -->
+            <div id="card2" class="card" style="display:none;">
+                <h2>deepseek asm via 5 days of open source</h2>
+                <p>Overload of wgmma cuda function, dealing with warp level matmults</p>
+
+                <pre id="codeBlock">
+<code>
+    struct SM90_64x16x32_F32E4M3E4M3_SS {
+        __device__ static void wgmma(uint64_t const& desc_a, uint64_t const& desc_b,
+                                     float& d00, float& d01, float& d02, float& d03, float& d04, float& d05, float& d06, float& d07,
+                                     bool scale_d) {
+            asm volatile("{\n"
+                         ".reg .pred p;\n"
+                         "setp.ne.b32 p, %10, 0;\n"
+                         "wgmma.mma_async.sync.aligned.m64n16k32.f32.e4m3.e4m3"
+                         "{%0,   %1,   %2,   %3,   %4,   %5,   %6,   %7},"
+                         " %8,"
+                         " %9,"
+                         " p   , 1,    1;\n"
+                         "}\n"
+                         : "+f"(d00), "+f"(d01), "+f"(d02), "+f"(d03), "+f"(d04), "+f"(d05), "+f"(d06), "+f"(d07)
+                         : "l"(desc_a), "l"(desc_b), "r"(int32_t(scale_d)));
+        }
+    
+        __device__ static void wgmma(uint64_t const& desc_a, uint64_t const& desc_b, float* d, bool scale_d) {
+            wgmma(desc_a, desc_b,
+                  d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7],
+                  scale_d);
+        }
+    
+        static constexpr int M = 64;
+        static constexpr int N = 16;
+        static constexpr int K = 32;
+        static constexpr int kNumAccum = M * N / 128;
+    };
+
+
+</code>
+</pre>
+
+                <div id="infoBox">
+                    <p>test...</p>
+                </div>
             </div>
+            <!-- end card2 -->
+            
 
-            <div id="card3" class="card" style="display:none;">
-                <h2>loop unrolling</h2>
-                <p>...</p>
-            </div>
 
-            <div id="card4" class="card" style="display:none;">
-                <h2>faster matmults</h2>
-                <p>...</p>
-            </div>
+        <div id="card3" class="card" style="display:none;">
+            <h2>loop unrolling</h2>
+            <p>...</p>
+        </div>
 
-            <div id="card5" class="card" style="display:none;">
-                <h2>assembly</h2>
-                <p>...</p>
-            </div>
+        <div id="card4" class="card" style="display:none;">
+            <h2>faster matmults</h2>
+            <p>...</p>
+        </div>
 
-            <div id="card6" class="card" style="display:none;">
-                <h2>bunny hopping</h2>
-                <p>...</p>
-            </div>
-        </main>
-    </div>
+        <div id="card5" class="card" style="display:none;">
+            <h2>assembly</h2>
+            <p>...</p>
+        </div>
 
+        <div id="card6" class="card" style="display:none;">
+            <h2>bunny hopping</h2>
+            <p>...</p>
+        </div>
+
+    </main>
+
+    <!-- scripts for code highlighting: -->
+    <script>
+        const blackitems = document.querySelectorAll(".var1");
+        blackitems.forEach(blackitem => {
+            blackitem.addEventListener("mouseenter", () => {
+                blackitems.forEach(el => el.classList.add("blackhighlight"));
+            });
+            blackitem.addEventListener("mouseleave", () => {
+                blackitems.forEach(el => el.classList.remove("blackhighlight"));
+            });
+        }); 
+    </script>
+    <script>
+        const reditems = document.querySelectorAll(".var2");
+        reditems.forEach(reditem => {
+            reditem.addEventListener("mouseenter", () => {
+                reditems.forEach(el => el.classList.add("redhighlight"));
+            });
+            reditem.addEventListener("mouseleave", () => {
+                reditems.forEach(el => el.classList.remove("redhighlight"));
+            });
+        }); 
+    </script>
+    <!-- show card script -->
     <script>
         function showCard(cardId) {
-            var cards = document.querySelectorAll('.card');
-            cards.forEach(function(card) {
+            var cards = document.querySelectorAll('.card'); // getg all cards
+            cards.forEach(function (card) { // hide by setting display to none
                 card.style.display = 'none';
             });
-            document.getElementById(cardId).style.display = 'block';
+            document.getElementById(cardId).style.display = 'block'; // get current card and show by displaying in block
         }
     </script>
+
+    
 </body>
+
 </html>
