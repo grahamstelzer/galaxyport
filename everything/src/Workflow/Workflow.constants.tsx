@@ -51,7 +51,7 @@ export const initialNodes: Node[] = [
     {
         id: 'codemuseum',
         type: 'htmlNode',
-        position: { x: 500, y: 800 },
+        position: { x: 500, y: 400 },
         data: { 
             link: './codemuseum.html', 
             title: 'about'

@@ -8,11 +8,11 @@ import { useState } from 'react';
 
 export default function HTMLNode({ data: { link } }: NodeProps<{ link: string }>) {
   return (
-    <div style={{ border: "2px solid red", overflow: "auto", transform: "scale(0.8)", transformOrigin: "top left", borderRadius: "10px", width: "500px", minHeight: "200px" }}>
+    <div style={{ border: "1px solid red", overflow: "auto", transform: "scale(0.4)", transformOrigin: "top left", borderRadius: "10px" }}>
       <iframe
       src={link}
-      width="100%"
-      height="400px"
+      width="800px"
+      height="600px"
       // style={{ border: "2px solid green" }}
       />
     </div>

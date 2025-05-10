@@ -93,12 +93,12 @@ export const Workflow = () => {
                 ) : (
                     <Box height="100%" overflowY="auto">
                         {nodes.map((node) => (
-                            <Box key={node.id} p={0} m={0} border="1px solid black">
+                            <Box key={node.id} p={0} m={0} border="0px solid white"> {/* EDIT THIS TO SHOW BORDERS */}
                                 <iframe 
                                     src={node.data.link} 
                                     title={node.data.title} 
                                     width="100%" 
-                                    style={{ minHeight: '150px', height: 'auto' }} 
+                                    style={{ minHeight: '100%', height: 'auto' }} 
                                     onLoad={(e) => {
                                         const iframe = e.target as HTMLIFrameElement;
                                         if (iframe.contentWindow) {

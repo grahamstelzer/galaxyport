@@ -23,7 +23,7 @@ export default function CustomNode({id, data:{text, title}}:NodeProps<{text:stri
             alignItems={"center"}
             borderRadius="5px"
             bg={"black"}
-            border="1px solid"
+            border="0px solid" {/* EDIT THIS AND ALSO IN WORKFLOW FOR BORDERS*/}
             borderColor={"white"}
             p={2}
             gap={2}
