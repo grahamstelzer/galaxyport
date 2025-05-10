@@ -1,85 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Git Timeline</title>
     <style>
-        html, body {
-            overflow: hidden;
-            height: 500px;
-            margin: 0;
+        h1 {
+            margin-bottom: 0px;
+            padding-bottom: 0px;
         }
         body {
-            font-family: 'FreeMono', monospace;
-            background-color: #f0f0f0;
+            font-family: 'Courier New', monospace;
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 2rem;
+            height: 100%;
             margin: 0;
-            padding: 0;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
         }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 80%;
-            max-width: 600px;
-            animation: fadeIn 1s ease-in-out;
+
+        .navbar {   
+            display: flex;
+            justify-content: flex-start;
+            background-color: #2d2d2d;
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+            overflow-x: auto;
         }
-        h1 {
-            text-align: center;
-            color: #333;
+
+        .navbar a {
+            color: #d4d4d4;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            background-color: #444;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+            min-width: 100px;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+
+        .navbar a:hover {
+            background-color: #61dafb;
         }
-        li {
-            background-color: #e0e0e0;
-            margin: 10px 0;
-            padding: 10px;
+
+        .navbar a.active {
+            background-color: #61dafb;
+            color: #1e1e1e;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: auto;
+            display: block;
+        }
+
+        .commit {
+            position: relative;
+            background: #2d2d2d;
+            padding: 1rem 1rem 1rem 2rem;
+            border-left: 4px solid #61dafb;
+            margin: 0.5rem 0;
+        }
+
+        .commit::before {
+            content: '';
+            position: absolute;
+            top: 1.2rem;
+            left: -10px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #1e1e1e;
+        }
+
+        .branch-main::before {
+            background: #61dafb;
+        }
+
+        .branch-feature::before {
+            background: #c678dd;
+        }
+
+        .branch-hotfix::before {
+            background: #e06c75;
+        }
+
+        .delete::before {
+            background: red;
+        }
+
+        .branch-main { border-left-color: #61dafb; }
+        .branch-feature { border-left-color: #c678dd; }
+        .branch-hotfix { border-left-color: #e06c75; }
+        .delete { border-left-color: red; }
+
+        .commit .hash {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .indent-1 { margin-left: 2rem;  }
+        .indent-2 { margin-left: 4rem;  }
+
+        .tag {
+            background: #444;
+            color: #fff;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+        }
+
+        .action {
+            font-style: italic;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .merge::before {
+            background: gold;
+        }
+
+        .delete::before {
+            background: red;
+        }
+
+
+        .tabs {
+            margin-top: 0.8rem;
+            padding-top: 0.5rem;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-button {
+            background: #3f3f3f;
+            color: #d4d4d4;
+            padding: 0.3rem 0.7rem;
+            margin-right: 0.5rem;
+            border: 1px solid #444;
+            cursor: pointer;
             border-radius: 4px;
-            transition: transform 0.3s, background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Courier New', monospace;
         }
-        li:hover {
-            transform: scale(1.05);
-            background-color: #d0d0d0;
+
+        .tab-button:hover {
+            background: #61dafb;
+            color: #1e1e1e;
         }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+
+        .tab-content {
+            margin-top: 0.5rem;
+            background: #3f3f3f;            
+            padding: 0.5rem;
+            border: 1px solid #444;
+            border-radius: 6px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Projects</h1>
-        <p>(still being updated...)</p>
-        <ul>
-            <li><a href="projects/betasprai/project1.html">betasprAI</a></li>
-
-            <li>
-                <a href="https://github.com/grahamstelzer/transformer" target="_blank">
-                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 8px; border-radius: 10px;">
-                    Transformer from scratch
-                </a>
-            </li>
-
-            <li>
-                <a href="https://github.com/grahamstelzer/bbtorch" target="_blank">
-                    <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 8px; border-radius: 10px;">
-                    bbtorch
-                </a>
-            </li>
+    <div class="navbar">
+        <a href="#timeline1" onclick="showTimeline('timeline1', event)">betasprAI</a>
+        <a href="#timeline2" onclick="showTimeline('timeline2', event)">ViT for retrofitting</a>
+        <a href="#timeline3" onclick="showTimeline('timeline3', event)">transformer architecture from scratch</a>
+        <a href="#timeline4" onclick="showTimeline('timeline4', event)">bbtorch</a>
+        <a href="#timeline5" onclick="showTimeline('timeline5', event)">golang webapp</a>
+        <a href="#timeline6" onclick="showTimeline('timeline6', event)">stock preds with attn</a>
 
 
-        </ul>
+        <a href="#timeline10" onclick="showTimeline('timeline10', event)">gui</a>
+        <a href="#timeline11" onclick="showTimeline('timeline11', event)">machine learning</a>
+
+        <a href="#timeline20" onclick="showTimeline('timeline20', event)">C</a>
+        <a href="#timeline21" onclick="showTimeline('timeline21', event)">C++</a>
+        <a href="#timeline22" onclick="showTimeline('timeline22', event)">Assembly</a>
+
+
+        
+
+
+
+
     </div>
-</body>
-</html>
+
+    <h1>Projects (Commit History)</h1>
+    <p>someday ill write an api that connects straight to my github or something...</p>
+
+    <div id="timeline1" class="timeline">
+        <!-- Timeline content for Project 1 -->
+            <div class="commit branch-main">
+                <h3>Initial commit: betasprAI <span class="tag">main</span></h3>
+                <div class="hash">commit init123</div>
+                <p>ai rock climbing assistance</p>
+                <div class="tabs">
+                    <button class="tab-button" onclick="showTab(this)">Details</button>
+                    <button class="tab-button" onclick="showTab(this)">Technologies/Concepts</button>
+                    <button class="tab-button" onclick="showTab(this)">Website</button>
+                    <button class="tab-button" onclick="showTab(this)">Code</button>
+                    <button class="tab-button" onclick="showTab(this)">Visuals</button>
+                    <div class="tab-content">
+                        <p>
+                            Rock climbing happens to be one of the few professional sports that is linearly sequential. In order to complete a route,
+                            a climber must position each part of their body perfectly so as to maximize their grip on the wall and minimize energy
+                            expenditure. Then they must transfer from that position to the next. A standard boulder climb has anywhere between 4 and
+                            12 moves (roughly on average). 
+                        </p>
+                        <p>
+                            At the highest level, the difference between success and failure is a matter millimeters. 
+                            At every other level
+                            though, the difference can be seen in body position, limb placement, hip movements etc., and part of the challenge is 
+                            figuring out exactly what the specifics are.
+                        </p>
+                        <p>
+                            I propose that, if numericized, this is a problem that can be solved by sequential deep learning models.
+                        </p>
+                    </div>
+                    <div class="tab-content">
+                        <ul>
+                            <li>OpenCV/Mediapipe (landmarks -> dataset building)</li>
+                            <li>AWS Lambda/S3</li>
+                            <li>React/NextJS/Vercel</li>
+                            <li>MongoDB</li>
+                            <li>Flask</li>
+                            <li>Git/Jira/Reactflow/draw.io (organization/collaboration/architecture design)</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <p>Under development; not currently deployed since we need to rebuild our nextjs integration...</p>
+                    </div>
+                    <div class="tab-content">
+                        <p>github link soon</p>
+                    </div>
+                    <div class="tab-content">
+                        <p>*Initial* architecture via reactflow:</p>
+                        <iframe src="./projects/betasprai/workflow.html" style="width: 100%; height: 600px; border: none;"></iframe>
+                        <!-- <p>Visuals:</p>
+                        <img src="./projects/betasprai/betasprai_cog.png" alt="Visual 1" style="max-width: 100%; height: auto;" /> -->
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="commit branch-main">
+                <h3>Setup/Preproc <span class="tag">main</span></h3>
+                <div class="hash">commit abc123</div>
+                <p>step 1: find and create a dataset (mediapipe, opencv)</p>
+                <div class="tabs">
+                    <button class="tab-button" onclick="showTab(this)">Details</button>
+                    <button class="tab-button" onclick="showTab(this)">Code</button>
+                    <button class="tab-button" onclick="showTab(this)">ex. video</button>
+
+                    <div class="tab-content">
+                        <p>
+                            Climbers commonly take videos of themselves tackling a route. Usually to prove they have done it or to show their friends.
+                            Often these are posted on the internet, though serious climbers will sometimes record themselves just to self analyze. 
+                        </p>
+                        <p>
+                            Regardless, pixels are numbers, and numbers we can use for a dataset.
+                        </p>
+                    </div>
+                    <div class="tab-content">
+                    <pre>
+                    <code>
+# TODO: change to "import *" later but for now just keeping in mind which functions work
+from VideoParsing import frame_extract, calculate_angle, plot_landmarks
+from Visualization import video_select, get_dimensions, display_frame, draw_centerline
+
+
+'''
+=================================================================
+Visualization, MP and CV2 setup:
+=================================================================
+'''
+
+# setup mp
+mp_drawing = mp.solutions.drawing_utils
+mp_pose = mp.solutions.pose
+
+video = video_select()
+
+# open a connection to the video file
+cap = cv2.VideoCapture(video)
+
+dimensions = get_dimensions(cap)
+
+# TODO: move to "getter" function for names in the cell state building phase
+# access enum of landmark names, ex 'PoseLandmark.RIGHT_KNEE', 
+#   usable as landmark[26] in following try block
+
+for name in mp_pose.PoseLandmark:
+    print(name)
+
+points = []
+timestp = 0
+
+# TODO: add angle changes as a feature, via grouping time steps? 
+
+first_iter = True
+
+...
+                    </code>
+                    </pre>
+                    </div>
+
+                    <div class="tab-content">
+                        <video controls style="max-width: 50%; height: auto;">
+                            <source src="./projects/betasprai/20240324_205135_1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                </div>
+            </div>
+
+            <div class="commit branch-feature indent-1">
+                <h3>Added terminal interface <span class="tag">feature/ui</span></h3>
+                <div class="hash">commit def456</div>
+                <p>Simulated command-line view.</p>
+            </div>
+            <div class="commit branch-feature indent-2">
+                <h3 class="merge">Merged with dark mode styles</h3>
+                <div class="hash">commit ghi789</div>
+                <p class="action">Merged from `feature/dark-mode`.</p>
+            </div>
+            <div class="commit branch-main">
+                <h3>Merged feature/ui into main</h3>
+                <div class="hash">commit jkl012</div>
+                <p class="action">Feature branch integrated.</p>
+            </div>
+            <div class="commit branch-hotfix">
+                <h3>Fixed deploy script bug <span class="tag">hotfix</span></h3>
+                <div class="hash">commit mno345</div>
+                <p>Fixed environment variable issue.</p>
+            </div>
+            <div class="commit delete indent-1">
+                <h3>Deleted feature/test-sandbox</h3>
+                <div class="hash">commit pqr678</div>
+                <p class="action">Deprecated experimental feature.</p>
+            </div>
+            <div class="commit branch-main">
+                <h3>Pushed to production</h3>
+                <div class="hash">commit stu901</div>
+                <p class="action">Live on GitHub Pages.</p>
+            </div>
+    </body>
+    </div>
+
+
+    <div id="timeline2" class="timeline" style="display: none;">
+        <!-- Timeline content for Project 2 -->
+    </div>
+    <div id="timeline3" class="timeline" style="display: none;">
+        <!-- Timeline content for Project 3 -->
+    </div>
+    <div id="timeline4" class="timeline" style="display: none;">
+        <!-- Timeline content for Project 4 -->
+    </div>
+
+
+
+    <script>
+        function showTimeline(timelineId) {
+
+            event.preventDefault(); // Prevent the default anchor behavior
+        
+            const timelines = document.querySelectorAll('.timeline');
+            timelines.forEach(timeline => timeline.style.display = 'none');
+            document.getElementById(timelineId).style.display = 'block';
+
+            const navbarLinks = document.querySelectorAll('.navbar a');
+            navbarLinks.forEach(link => link.classList.remove('active'));
+            document.querySelector(`[onclick="showTimeline('${timelineId}')"]`).classList.add('active');
+        }
+    </script>
+    <script>
+        function showTab(button) {
+            const commit = button.closest('.commit');
+            const allContents = commit.querySelectorAll('.tab-content');
+            const index = Array.from(button.parentNode.children).indexOf(button);
+            const target = allContents[index];
+
+            if (target.classList.contains('active')) {
+            target.classList.remove('active');
+            target.style.display = 'none';
+            } else {
+            allContents.forEach(tab => {
+                tab.classList.remove('active');
+                tab.style.display = 'none';
+            });
+            if (target) {
+                target.classList.add('active');
+                target.style.display = 'block';
+            }
+            }
+        }
+    </script>
+
+</html></div>
