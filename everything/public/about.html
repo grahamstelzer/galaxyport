@@ -5,21 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me</title>
     <style>
+        section {
+            margin: 20px;
+        }
+
         body {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 1200px;
+            margin: 10px auto;
             padding: 20px;
-            font-family: 'FreeMono', monospace;
+            font-family: 'FreeMono', monospace; 
             line-height: 1.6;
-            background-color: #f4f4f4;
+            background-color: rgb(255, 255, 255);
             color: #333;
             min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            background-color: #dcdcdc;
         }
 
         header {
             background-color: #333;
             color: #fff;
-            padding: 10px 0;
+            padding: 20px 0;
             text-align: center;
         }
 
@@ -28,95 +36,98 @@
             font-size: 2.5em;
         }
 
-        section {
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 2px;
+        h5 {
+            margin: 0;
+            font-size: 1.2em;
         }
 
-        p {
-            margin: 0;
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         #main {
-            position: relative;
-            float: left;
-            margin-bottom: 20px;
+            flex: 2;
+            background: #fff;
+            /* padding: 20px; */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* border-radius: 8px; */
         }
 
         #secondary {
-            position: absolute;
-            z-index: -1;
-            right: 10px;
-            top: 20px;
-            width: 20%;
-            background-color: #eaeaea;
-            padding: 10px;
+            flex: 1;
+            background: #fff;
+            /* padding: 20px; */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+            /* border-radius: 8px; */
         }
+
         #secondary p {
             font-size: 0.8em;
         }
 
-    </style>
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
 
+            #secondary {
+                order: 2;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="main">
-        <header>
-            <h1>About Me</h1>
-        </header>
-        <section>
-            <p><h3><b>Hello! My name is Graham...</b></h3>I am a software developer with a passion for anything and 
-                everything to do with <b>deep learning</b>. I also enjoy researching <b>optimization tasks</b>, whether
-                for <b>faster matmults</b>, speedier <b>full-stack communication</b>, or even <b>quantum computing tasks</b>!
-                
-                <br>
+    <header>
+        <h1>About Me</h1>
+    </header>
+    <div class="container">
+        <div id="main">
+            <section>
+                <p><h3><b>Hello! My name is Graham...</b></h3>I am a software developer with a passion for anything and 
+                    everything to do with <b>deep learning</b>. I also enjoy researching <b>optimization tasks</b>, whether
+                    for <b>faster matmults</b>, speedier <b>full-stack communication</b>, or even <b>quantum computing tasks</b>!
+                    
+                    <br>
+                    <br>
+
+                    I recently graduated from UMASS Lowell with a 
+                    degree in <b>Computer Science (AI/ML)</b> and a <b>3.6 GPA</b>, and am currently researching
+                    Master's Programs to apply to.
+
+                    <br>
+                    <br>
+
+                    In my free time, I frequent rock climbing gyms, and can currently climb V7-V9! I like to
+                    play old FPS games that use the Source Engine (TF2, CS2, Apex) and will always enjoy
+                    a good conversation about philosophy.
+                </p>
+            </section>
+        </div>
+
+        <div id="secondary">
+            <header>
+                <h5>Technologies/Languages/Interests:</h5>
+            </header>
+            <section>
+                <p>
+                    Python, C/C++, SQL, Go, JavaScript/TypeScript, HTML/CSS
+                </p>
+
                 <br>
 
-                I recently graduated from UMASS Lowell with a 
-                degree in <b>Computer Science (AI/ML)</b> and a <b>3.6 GPA</b>, and am currently researching
-                Master's Programs to apply to.
+                <p>
+                    PyTorch/LibTorch, Vue.js, React, AWS, WSL, Git, Jira, MongoDB/PostgreSQL
+                </p>
 
                 <br>
-                <br>
 
-                In my free time, I frequent rock climbing gyms, and can currently climb V7-V9! I like to
-                play old FPS games that use the Source Engine (TF2, CS2, Apex) and will always enjoy
-                a good conversation about philosophy.
-            
-            
-            </p>
-        </section>
+                <p>
+                    Deep learning, Optimization tasks, MLOps, Fullstack
+                </p>
+            </section>
+        </div>
     </div>
-
-    <div id="secondary">
-        <header>
-            <h5>Technologies/Languages/Interests:</h2>
-        </header>
-        <section>
-            <p>
-                Python, C/C++, SQL, Go, JavaScript/TypeScript, HTML/CSS
-            </p>
-
-            <br>
-
-            <p>
-                PyTorch/LibTorch, Vue.js, React, AWS, WSL, Git, Jira, MongoDB/PostgreSQL
-            </p>
-
-            <br>
-
-            <p>
-                Deep learning, Optimization tasks, MLOps, Backend
-            </p>
-
-        </section>
-    </div>
-
-
-
 </body>
 </html>
