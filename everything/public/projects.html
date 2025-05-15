@@ -6,19 +6,32 @@
     <title>Git Timeline</title>
     <style>
         h1 {
-            margin-bottom: 0px;
-            padding-bottom: 0px;
+            margin: 10px auto 15px auto;
+            padding-bottom: 10px;
         }
         body {
             font-family: 'Courier New', monospace;
             background-color: #1e1e1e;
             color: #d4d4d4;
-            padding: 2rem;
-            height: 100%;
+            padding-top: 2rem;
+            padding-left: auto;
+            padding-right: auto;
+            padding-bottom: 500px;
             margin: 0;
             display: flex;
             flex-direction: column;
+            /* min-height: 100vh; */
+            height: auto;
             overflow: hidden;
+            min-height: 900px;
+        }
+
+        body:focus {
+            overflow: auto;
+        }
+
+        body:focus-visible {
+            outline: none;
         }
 
         .navbar {   
@@ -56,6 +69,13 @@
             max-width: 800px;
             margin: auto;
             display: block;
+            max-height: calc(80vh - 2rem); /* Adjusted to account for body padding */
+            overflow-y: auto;
+            overflow-x: hidden;
+            
+            padding-left: 2rem;
+            padding-right: 2rem;
+            padding-bottom: 2rem; /* Added to prevent content from being cut off */
         }
 
         .commit {
@@ -133,6 +153,7 @@
         .tabs {
             margin-top: 0.8rem;
             padding-top: 0.5rem;
+            min-width: 50vw;
         }
 
         .tab-content {
@@ -166,6 +187,7 @@
             padding: 0.5rem;
             border: 1px solid #444;
             border-radius: 6px;
+            max-width: 75%;
         }
     </style>
 </head>
@@ -177,14 +199,15 @@
         <a href="#timeline4" onclick="showTimeline('timeline4', event)">bbtorch</a>
         <a href="#timeline5" onclick="showTimeline('timeline5', event)">golang webapp</a>
         <a href="#timeline6" onclick="showTimeline('timeline6', event)">stock preds with attn</a>
+        <a href="#timeline7" onclick="showTimeline('timeline7', event)">ramalama tui</a>
 
 
         <a href="#timeline10" onclick="showTimeline('timeline10', event)">gui</a>
         <a href="#timeline11" onclick="showTimeline('timeline11', event)">machine learning</a>
 
-        <a href="#timeline20" onclick="showTimeline('timeline20', event)">C</a>
-        <a href="#timeline21" onclick="showTimeline('timeline21', event)">C++</a>
-        <a href="#timeline22" onclick="showTimeline('timeline22', event)">Assembly</a>
+        <a href="#timeline20" onclick="showTimeline('timeline20', event)">all C stuff</a>
+        <a href="#timeline21" onclick="showTimeline('timeline21', event)">all C++ stuff</a>
+        <a href="#timeline22" onclick="showTimeline('timeline22', event)">all Asm stuff</a>
 
 
         
@@ -194,11 +217,11 @@
 
     </div>
 
-    <h1>Projects (Commit History)</h1>
-    <p>someday ill write an api that connects straight to my github or something...</p>
+    <h1>Projects (Commit History) <span class="tag">at some point ill write an api to my ghub but rn im typing it in so its taking awhile</span></h1>
+    <!-- <p>someday ill write an api that connects straight to my github or something...</p> -->
 
+<!-- betasprAI (project 1) -->
     <div id="timeline1" class="timeline">
-        <!-- Timeline content for Project 1 -->
             <div class="commit branch-main">
                 <h3>Initial commit: betasprAI <span class="tag">main</span></h3>
                 <div class="hash">commit init123</div>
@@ -252,10 +275,10 @@
             </div>
 
 
-
+            <!-- setup/preproc -->
             <div class="commit branch-main">
                 <h3>Setup/Preproc <span class="tag">main</span></h3>
-                <div class="hash">commit abc123</div>
+                <div class="hash">commit sup345</div>
                 <p>step 1: find and create a dataset (mediapipe, opencv)</p>
                 <div class="tabs">
                     <button class="tab-button" onclick="showTab(this)">Details</button>
@@ -324,43 +347,197 @@ first_iter = True
                 </div>
             </div>
 
+
+            <!-- timestep video loop -->
             <div class="commit branch-feature indent-1">
-                <h3>Added terminal interface <span class="tag">feature/ui</span></h3>
-                <div class="hash">commit def456</div>
-                <p>Simulated command-line view.</p>
+                <h3>added feature extraction via mediapipe <span class="tag">primary functionality</span></h3>
+                <div class="hash">commit loo456</div>
+                <p> main loop: landmark tracking over time creates dataset</p>
+                <div class="tabs">
+                    <button class="tab-button" onclick="showTab(this)">Details</button>
+                    <button class="tab-button" onclick="showTab(this)">MP landmark diagram</button>
+                    <button class="tab-button" onclick="showTab(this)">Code</button>
+
+
+                    <div class="tab-content">
+                        <p>
+                            Mediapipe tracks an x, y and z coordinate of 33 different positions on the human body from a video.
+                            I had to slightly tweak some of the thresholds, and the z-coord gets a bit sketchy on some climbing moves
+                            where a hand or arm is hidden behind the body. I may rewrite or try to retrain some of their models or at
+                            the very least, add some decider code for these instances.
+                        </p>
+                        <p>
+                            Overall calculation is 33x3 per video frame which presents an excellent sequential dataset for even a single video
+                            of say 1000 frames.
+                        </p>
+                        <p>
+                            This can be a good use case for the learning models more suited towards sequential datasets like
+                            an LSTM (which we tried) or a GRU but the attention mechanism is so easily accessible and modifiable
+                            that we might as well utilize it. Will elaborate later but off-the-shelf transformer model
+                            for a proof-of-concept is being built and trained currently.
+                        </p>
+                    </div>
+
+                    <div class="tab-content">
+                        <img src="./projects/betasprai/landmarks.jpg">
+                    </div>
+
+                    <div class="tab-content">
+<pre>
+<code>
+
+'''
+=================================================================
+Main timestep video loop (psuedocode):
+=================================================================
+'''
+
+mp_drawing = mp.solutions.drawing_utils # drawing used for outputting fbf with drawn features via cv2 instance
+...
+# create pose instance
+mp_pose = mp.solutions.pose
+# get video via cv2
+cap = cv2.VideoCapture(video) 
+
+# all extraction data will go into a single list (for now), we will calculate the timestep as well
+points = []
+timestep = 0
+    
+
+loop:
+    # setup frame reading, get dimensions
+    ret, frame = cap.read() 
+    dimensions = get_dimensions(cap)
+
+    # breakout if unable to read
+    if not ret:
+        break
+
+    # convert frame to grayscale - it was recommended to do this, 
+    #   I havent checked other options yet since it worked
+    gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # image is just a cv2 frame for outputting, detections lists all POSSIBLE items from the landmarks
+    #   and landmarks stores just x,y,z. I will definitely be tweaking this later to add visibility
+    #   as another feature to analyze.
+    image, detections, landmarks = frame_extract(gray_frame, pose, points)
+
+    ...
+    (more functionality added later but this is the main piece)
+
+</code>
+</pre>
+                    </div>
+                </div>
             </div>
-            <div class="commit branch-feature indent-2">
-                <h3 class="merge">Merged with dark mode styles</h3>
-                <div class="hash">commit ghi789</div>
-                <p class="action">Merged from `feature/dark-mode`.</p>
+
+            <div class="commit branch-hotfix indent-2">
+                <h3 class="merge">wrote frame_extract() <span class="tag">function</span></h3>
+                <div class="hash">commit fre789</div>
+                <p>this function actually fills the landmarks list which we use as the dataset</p>
             </div>
+
+            <div class="commit delete indent-2">
+                <h3>bug: ___ <span class="tag">error</span></h3>
+                <div class="hash">fix required aac332</div>
+                <p>if landmarks not visible for multiple frames, loop crashes</p>
+            </div>
+
+
+            <!-- frame by frame viewing -->
+            <div class="commit branch-feature indent-1">
+                <h3>added live frame by frame viewing via cv2 <span class="tag">secondary functionality</span></h3>
+                <div class="hash">commit fbf455</div>
+                <p>allows viewing of landmarks over video</p>
+            </div>
+
+
+
+            <!-- graphing with matplot -->
+            <div class="commit branch-feature indent-1">
+                <h3>added landmark plotting via matplotlib <span class="tag">secondary functionality</span></h3>
+                <div class="hash">commit mpl132</div>
+                <p>plots x,y,z over time</p>
+            </div>
+
+
+
+        
+            <!-- nn models -->
             <div class="commit branch-main">
-                <h3>Merged feature/ui into main</h3>
-                <div class="hash">commit jkl012</div>
-                <p class="action">Feature branch integrated.</p>
+                <h3>Model Selection</h3>
+                <div class="hash">commit mdl420</div>
+                <p class="action">3 models are planned; lstm, transformer (base), vit</p>
             </div>
-            <div class="commit branch-hotfix">
-                <h3>Fixed deploy script bug <span class="tag">hotfix</span></h3>
-                <div class="hash">commit mno345</div>
-                <p>Fixed environment variable issue.</p>
-            </div>
-            <div class="commit delete indent-1">
-                <h3>Deleted feature/test-sandbox</h3>
-                <div class="hash">commit pqr678</div>
-                <p class="action">Deprecated experimental feature.</p>
-            </div>
-            <div class="commit branch-main">
-                <h3>Pushed to production</h3>
-                <div class="hash">commit stu901</div>
-                <p class="action">Live on GitHub Pages.</p>
-            </div>
+
+                <div class="commit branch-feature indent-1">
+                    <h3>added LSTM code<span class="tag">model</span></h3>
+                    <div class="hash">commit lst921</div>
+                    <p>
+                        
+                    </p>
+                </div>
+
+
+                <div class="commit branch-feature indent-1">
+                    <h3>added transformer code<span class="tag">model</span></h3>
+                    <div class="hash">commit tfm992</div>
+                    <p>
+                        
+                    </p>
+                </div>
+
+
+                <div class="commit branch-feature indent-1">
+                    <h3>added ViT code<span class="tag">model</span></h3>
+                    <div class="hash">commit vit911</div>
+                    <p>
+                        "off-the-shelf" pytorch vision transformer
+                    </p>
+                </div>
+
+
     </body>
     </div>
 
 
-    <div id="timeline2" class="timeline" style="display: none;">
+
+
+
+
+
+
+
+    <div id="timeline2" class="timeline">
+            <div class="commit branch-main">
+                <h3>Initial commit: vit for retrofitting <span class="tag">main</span></h3>
+                <div class="hash">commit init123</div>
+                <p>vision transformer for researching hyper-optimization techniques</p>
+                    <div class="tabs">
+                        <button class="tab-button" onclick="showTab(this)">Details</button>
+                        <button class="tab-button" onclick="showTab(this)">github</button>
+
+                        <div class="tab-content">
+                            <p>There are many usecases for this ViT:</p>
+                            <p>1) Write a ViT to learn how to quickly get a model from a ML library (as opposed to writing everything from scratch, see tformer from scratch...)</p>
+                            <p>2) Learn how ViTs work (seems like the same model to me, just need to think about the input and positional embeddings a bit more)</p>
+                            <p>3) Use with betasprAI as a proof-of-concept while I continue to improve the Tformer from scratch (the annoying part is getting the dataset)</p>
+                        </div>
+
+                        <div class="tab-content">
+                            <p><a href="https://github.com/grahamstelzer/vit-for-retrofitting" target="_blank">repo</a></p>
+                        </div>
+
+
+                    </div>
         <!-- Timeline content for Project 2 -->
     </div>
+
+
+
+
+
+    
     <div id="timeline3" class="timeline" style="display: none;">
         <!-- Timeline content for Project 3 -->
     </div>
